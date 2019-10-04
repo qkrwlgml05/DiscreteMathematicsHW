@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 // #include <ctype.h>
+#include "puzzle.h"
 
-int main(int argc, char** argv){
-char fileName[100];
-    if (argc < 4)
-        scanf("%s", fileName);
-    else 
-        strcpy(fileName, argv[3]);
+int sudoku(char* argv);
+
+int sudoku(char* fileName){
     FILE* input  = fopen(fileName, "r");
     FILE * fp = fopen("formula", "w");
 
@@ -135,13 +133,14 @@ char fileName[100];
         int i,j;
 
         fscanf(output,"%s %s", a, b) ;
+
+        printf("\n\n---SUDOKU---\n");
         if(strcmp(a, "unsat") == 0){
         printf("No solution\n");
         fclose(output);
 
         return 0;
         }
-
         while (!feof(output)) {
             fscanf(output,"%s %s %s %s %s", b, s, b, b, t) ;
 
@@ -168,4 +167,3 @@ char fileName[100];
 
         return 0;
     }
-

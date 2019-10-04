@@ -1,24 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "puzzle.h"
 
-void fill_matrix (FILE* file, int *N, int *M, int *num, int input[][1000]);
-void print (int input[][1000], int N, int M);
-int getSize (int input[][1000], int N, int M, int i, int j);
-void parse(int M, int N);
+void fill_matrix_num (FILE* file, int *N, int *M, int *num, int input[][1000]);
+void parse_num(int M, int N);
+int numbrix(char* filename);
 
-int main(int argc, char** argv) {
-    char filename[100];
-    if (argc < 4)
-        scanf("%s", filename);
-    else 
-        strcpy(filename, argv[3]);
+int numbrix(char* filename) {
     FILE* file = fopen(filename, "r");
     int input[1000][1000];
     
     int N = 0, M = 0, num = 0;
     int i = 0, j = 0;
-    fill_matrix(file, &N, &M, &num, input);
+    fill_matrix_num(file, &N, &M, &num, input);
 
 	FILE * fp = fopen("formula", "w");
 
@@ -66,21 +61,7 @@ int main(int argc, char** argv) {
             fprintf(fp, "))\n") ;
         }
     }
-/*
-    // 하나의 수에 인접한 수 중 하나는 무조건 1만큼 작다. but, 1은 제외.
-    for (i = 0; i < M; i++){
-        for (j = 0; j < N; j++){
-            fprintf(fp, "(assert(or ") ;
-            for (int k = 1; k < 9; k=k+2){
-                if (i+k/3 <= 0 || i+k/3 > M || j+k%3 <= 0 || j+k%3 > N){
-                    continue;
-                }
-                fprintf(fp, "( and (= (- a%d%d 1) a%d%d) (< 1 a%d%d))",i+1, j+1, i+k/3, j+k%3, i+1, j+1) ;
-            }
-            fprintf(fp, "))\n") ;
-        }
-    }
-*/
+
 	fprintf(fp, "(check-sat)\n(get-model)\n") ;
 
 	fclose(fp) ;
@@ -98,11 +79,11 @@ int main(int argc, char** argv) {
 	}
     fclose(fps);
 	pclose(fin) ;
-
-    parse(M, N);
+    printf("\n\n---NUMBRIX---\n");
+    parse_num(M, N);
 }
 
-void fill_matrix (FILE* file, int *N, int *M, int *num, int input[][1000]){
+void fill_matrix_num (FILE* file, int *N, int *M, int *num, int input[][1000]){
     char line[500];
     int num_char = sizeof(line)/sizeof(char);
     
@@ -126,20 +107,7 @@ void fill_matrix (FILE* file, int *N, int *M, int *num, int input[][1000]){
     }
 }
 
-void print (int input[][1000], int N, int M){
-    int i = 0, j = 0;
-
-    printf("Input---\n");
-    for (i = 0; i < M; i++){
-        for (j = 0; j < N; j++){
-            printf("%d ", input[i][j]);
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-
-void parse(int M, int N){
+void parse_num(int M, int N){
     FILE* file = fopen("solution", "r");
     int i, j, k;
     int board[100][100];
@@ -164,7 +132,6 @@ void parse(int M, int N){
     }
     if (i==0 || j==0){
         printf("no solution\n");
-        exit(-1);
     }
     else{
         for (i = 1; i <= M; i++){
@@ -177,4 +144,3 @@ void parse(int M, int N){
         }
     }
 }
-

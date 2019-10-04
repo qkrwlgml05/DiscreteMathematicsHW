@@ -1,21 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "puzzle.h"
 
-void fill_matrix (FILE* file, int *N, int *M, int *num, int input[][1000], int input2[][1000]);
-int getSize (int input[][1000], int N, int M, int i, int j);
-int parse (int M, int N, int sol, int ***sol_mat);
+void fill_matrix_fill (FILE* file, int *N, int *M, int *num, int input[][1000], int input2[][1000]);
+int parse_fill (int M, int N, int sol, int ***sol_mat);
 void print(int M, int N, int sol, int ***sol_mat);
 void copy (int M, int N, int input[][1000], int input2[][1000]);
+int fillapix(char* filename) ;
 
-int main(int argc, char** argv) {
-    char filename[100];
-
-    
-    if (argc < 4)
-        scanf("%s", filename);
-    else
-        strcpy(filename, argv[2]);
+int fillapix(char* filename) {
+    printf("\n\n---FILL A PIX---\n");
     FILE* file = fopen(filename, "r");
     
     //FILE* file = fopen(argv[1], "r");
@@ -25,7 +20,7 @@ int main(int argc, char** argv) {
     int N = 0, M = 0, num = 0;
     int i = 0, j = 0;
     int sol =0;
-    fill_matrix(file, &N, &M, &num, input, input2);
+    fill_matrix_fill(file, &N, &M, &num, input, input2);
 
         
 //=================================================
@@ -198,21 +193,21 @@ int main(int argc, char** argv) {
         fclose(fps);
         pclose(fin) ;
 
-        int answer = parse(M, N, sol, solution);
+        int answer = parse_fill(M, N, sol, solution);
         if (answer > 0)
             sol++;
         else if (sol == 0){
             printf("No solution.\n");
-            eixt(-1);
+            return 0;
         }else
             break;
         copy(M, N, input, input2);
     }
-
     print(M, N, sol, solution);
+    return 0;
 }
 
-void fill_matrix (FILE* file, int *N, int *M, int *num, int input[][1000], int input2[][1000]){
+void fill_matrix_fill (FILE* file, int *N, int *M, int *num, int input[][1000], int input2[][1000]){
     char line[500];
     int num_char = sizeof(line)/sizeof(char);
     
@@ -247,7 +242,7 @@ int getSize (int input[][1000], int N, int M, int i, int j){
     return 9;
 }
 
-int parse (int M, int N, int sol, int ***sol_mat) {
+int parse_fill (int M, int N, int sol, int ***sol_mat) {
     FILE* file = fopen("solution", "r");
     int i, j, k;
     //int board[10][100][100];
@@ -260,7 +255,7 @@ int parse (int M, int N, int sol, int ***sol_mat) {
         fscanf(file, "%s %s %s %s %s", b, s, b, b, t);
         if (s[3] >= '0' && s[3] <= '9') continue;
         i = (s[1] >= '0' && s[1] <= '9' && t[0] >= '0' && t[0] <= '9') ? s[1]-'0' : 0;
-        j = (s[2] >= '0' && s[2] <= '9' && t[0] >= '0' << t[0] <= '9') ? s[2]-'0' : 0;
+        j = (s[2] >= '0' && s[2] <= '9' && t[0] >= '0' && t[0] <= '9') ? s[2]-'0' : 0;
 
         sol_mat[sol][i-1][j-1] = 0;
         int a = 0;
@@ -292,4 +287,3 @@ void copy (int M, int N, int input[][1000], int input2[][1000]){
         }
     }
 }
-
