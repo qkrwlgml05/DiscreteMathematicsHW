@@ -48,4 +48,4 @@ Yejin Kim 21800138
 Jihee Park 21800321
 Hanna Son 21800389
 Susanna Jung 21800662
-Boyeon Hwang 21800801
+Yeon Hwangbo 21800801
