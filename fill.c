@@ -201,7 +201,10 @@ int main(int argc, char** argv) {
         int answer = parse(M, N, sol, solution);
         if (answer > 0)
             sol++;
-        else
+        else if (sol == 0){
+            printf("No solution.\n");
+            eixt(-1);
+        }else
             break;
         copy(M, N, input, input2);
     }
